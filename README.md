@@ -144,6 +144,37 @@ Then do steps 2 to 4 of [Using Policy Providers](https://github.com/authzforce/c
 ## Vulnerability reporting
 If you want to report a vulnerability, please follow the [GitHub procedure for private vulnerability reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability#privately-reporting-a-security-vulnerability).
 
+
+## Personal notes
+### Build the project
+```sh
+mvn clean install
+```
+
+### Update POM dependencies
+```pom
+<plugin>
+	<!-- Consider combining with Red Hat Victims and OSS Index. More info 
+		on Victims vs. Dependency-check: https://bugzilla.redhat.com/show_bug.cgi?id=1388712 -->
+	<groupId>org.owasp</groupId>
+	<artifactId>dependency-check-maven</artifactId>
+	<configuration>
+		<!-- The plugin has numerous issues with version matching, which triggers 
+			false positives so we need a "suppresion" file for those. More info: https://github.com/jeremylong/DependencyCheck/issues -->
+		<nvdApiKey>e236b561-390e-4f58-a24b-a8ac1b10f5bf</nvdApiKey>
+		<suppressionFile>owasp-dependency-check-suppression.xml</suppressionFile>
+		<failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+	</configuration>
+	<executions>
+		<execution>
+			<goals>
+				<goal>check</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+```
+
 ## Support
 If you are experiencing any issue with this project except for vulnerabilities mentioned previously, please report it on the [GitHub Issue Tracker](https://github.com/authzforce/restful-pdp/issues).
 Please include as much information as possible; the more we know, the better the chance of a quicker resolution:
