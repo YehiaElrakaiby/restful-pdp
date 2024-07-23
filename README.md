@@ -174,6 +174,40 @@ mvn clean install
 	</executions>
 </plugin>
 ```
+### The warning message you encountered indicates that the parameter failBuildOnAnyVulnerability is deprecated and you should use the failBuildOnCVSS parameter instead. The failBuildOnCVSS parameter allows you to specify a CVSS (Common Vulnerability Scoring System) score threshold. If any detected vulnerabilities have a CVSS score equal to or higher than this threshold, the build will fail.
+
+Here's how to update your configuration depending on your build tool:
+
+Maven
+If you are using the OWASP Dependency-Check Maven plugin, you need to update your pom.xml to replace failBuildOnAnyVulnerability with failBuildOnCVSS.
+
+Before:
+```xml
+<plugin>
+<groupId>org.owasp</groupId>
+<artifactId>dependency-check-maven</artifactId>
+<version>6.5.0</version>
+<configuration>
+<failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+<!-- other configurations -->
+</configuration>
+</plugin>
+
+```
+After:
+```xml
+<plugin>
+<groupId>org.owasp</groupId>
+<artifactId>dependency-check-maven</artifactId>
+<version>6.5.0</version>
+<configuration>
+<failBuildOnCVSS>6</failBuildOnCVSS>
+<!-- other configurations -->
+</configuration>
+</plugin>
+```
+By setting failBuildOnCVSS to a value higher than 10 (the maximum CVSS score), the build will not fail due to vulnerabilities.
+
 
 ### API Key is used and a 403 or 404 error occurs
 If an API Key is used and you receive a 404 error:
