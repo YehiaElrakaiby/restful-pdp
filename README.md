@@ -175,6 +175,33 @@ mvn clean install
 </plugin>
 ```
 
+### API Key is used and a 403 or 404 error occurs
+If an API Key is used and you receive a 404 error:
+
+ERROR
+io.github.jeremylong.openvulnerability.client.nvd.NvdApiException: NVD Returned Status Code: 404
+There is a good chance that the API Key is set incorrectly or is invalid. To check if the API Key works the following curl command should return JSON:
+
+curl -H "Accept: application/json" -H "apiKey: ########-####-####-####-############" -v https://services.nvd.nist.gov/rest/json/cves/2.0\?cpeName\=cpe:2.3:o:microsoft:windows_10:1607:\*:\*:\*:\*:\*:\*:\*
+If no JSON is returned and you see a 404 error the API Key is invalid and you should request a new one.
+
+Command to test the API Key:
+```sh
+curl -H "Accept: application/json" -H "apiKey: e236b561-390e-4f58-a24b-a8ac1b10f5bf" -v https://services.nvd.nist.gov/rest/json/cves/2.0\?cpeName\=cpe:2.3:o:microsoft:windows_10:1607:\*:\*:\*:\*:\*:\*:\*
+```
+
+### Running the project
+```sh
+# Run the project using Docker
+cd docker
+docker compose up -d
+# Check the logs
+docker compose logs
+
+# Run the project using the executable JAR
+java -jar target/authzforce-ce-restful-pdp-cxf-spring-boot-server-16.0.0.jar
+```
+
 ## Support
 If you are experiencing any issue with this project except for vulnerabilities mentioned previously, please report it on the [GitHub Issue Tracker](https://github.com/authzforce/restful-pdp/issues).
 Please include as much information as possible; the more we know, the better the chance of a quicker resolution:
